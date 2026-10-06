@@ -1,4 +1,5 @@
 const userModel = require("../../models/user");
+const banUserModel = require("../../models/ban-user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const validator = require("../../validators/register");
@@ -11,6 +12,15 @@ exports.signup = async (req, res) => {
   }
 
   const { username, name, email, phone, password } = req.body;
+
+  const isUserBanned = await banUserModel.findOne({
+    $or: [{ phone }, { email }, { username }],
+  });
+
+  if (isUserBanned) {
+    return res.status(422).json({ message: "user have been banned" });
+  }
+
   const isUserAlreadyExists = await userModel.findOne({
     $or: [{ username }, { email }],
   });
