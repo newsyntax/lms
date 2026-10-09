@@ -2,7 +2,6 @@ const { isValidObjectId } = require("mongoose")
 const usersModel = require("../models/user")
 
 module.exports = async (req, res, next) => {
-    console.log("is user exist middleware")
     const { id } = req.params
     const isValidID = isValidObjectId(id)
 
