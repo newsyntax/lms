@@ -1,10 +1,14 @@
-const banUserModel = require("../models/ban-user");
 const userModel = require("../models/user");
+const banUserModel = require("../models/ban-user");
 
 exports.banUser = async (req, res) => {
-  const user = await userModel.findOne({ _id: req.params.id });
+  const { id } = req.params
+  const user = await userModel.findOne({ _id: id });
 
-  const isUserBanned = await banUserModel.findOne({ _id: req.params.id })
+
+  const isUserBanned = await banUserModel.findOne({
+    $or: [{ username: user.username }, { email: user.email }, { phone: user.phone }]
+  })
   if (isUserBanned) {
     return res.status(422).json({ message: "user banned before" })
 

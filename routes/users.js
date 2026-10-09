@@ -3,11 +3,12 @@ const router = express.Router();
 const controller = require("../controllers/user");
 const authMiddleware = require("../middlewares/auth");
 const isAdminMiddleware = require("../middlewares/isAdmin");
+const isUserExists = require("../middlewares/isUserExists");
 
 router.route("/").get(authMiddleware, isAdminMiddleware, controller.getAllUsers)
 
 router
   .route("/ban/:id")
-  .post(authMiddleware, isAdminMiddleware, controller.banUser);
+  .post(authMiddleware, isAdminMiddleware, isUserExists, controller.banUser);
 
 module.exports = router;
