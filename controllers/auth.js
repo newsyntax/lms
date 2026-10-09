@@ -28,7 +28,7 @@ exports.signup = async (req, res) => {
     return res.status(422).json({ message: "user have been banned" });
   }
 
-  const hashedPassword = await bcrypt.hash(password, 18);
+  const hashedPassword = await bcrypt.hash(password, 10);
   const user = await userModel.create({
     username,
     email,
@@ -41,7 +41,7 @@ exports.signup = async (req, res) => {
 
   const userObject = user.toObject()
   Reflect.deleteProperty(userObject, "password")
-  res.status(201).json( userObject, acccessToken );
+  res.status(201).json( {userObject, acccessToken} );
 };
 
 exports.signin = async (req, res) => {
