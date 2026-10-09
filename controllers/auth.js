@@ -13,7 +13,7 @@ exports.signup = async (req, res) => {
   const { username, name, email, phone, password } = req.body;
 
   const isUserAlreadyExists = await userModel.findOne({
-    $or: [{ username }, { email }],
+    $or: [{ username: username }, { email: email }],
   });
 
   if (isUserAlreadyExists) {
@@ -39,7 +39,9 @@ exports.signup = async (req, res) => {
 
   const acccessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
-  res.status(201).json({ user, acccessToken });
+  const userObject = user.toObject()
+  Reflect.deleteProperty(userObject, "password")
+  res.status(201).json( userObject, acccessToken );
 };
 
 exports.signin = async (req, res) => {
@@ -62,4 +64,4 @@ exports.signin = async (req, res) => {
   res.status(200).json({ acccessToken });
 };
 
-exports.getMe = async (req, res) => {};
+exports.getMe = async (req, res) => { };
