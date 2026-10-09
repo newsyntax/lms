@@ -37,3 +37,10 @@ exports.removeUser = async (req, res) => {
   await userModel.deleteOne({ _id: id })
   res.status(200).json({ message: "user remove successfully" })
 }
+
+exports.editUserRole = async (req, res) => {
+  const { id } = req.params
+  await userModel.updateOne({ _id: id }, { $set: { role: req.body.role } })
+  res.json({ message: `user role changed to ${req.body.role}` })
+
+}
