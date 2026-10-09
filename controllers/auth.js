@@ -1,9 +1,8 @@
-const userModel = require("../../models/user");
-const banUserModel = require("../../models/ban-user");
+const userModel = require("../models/user");
+const banUserModel = require("../models/ban-user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const validator = require("../../validators/register");
-require("dotenv").config();
+const validator = require("../validators/register");
 
 exports.signup = async (req, res) => {
   const isValidInfo = validator(req.body);

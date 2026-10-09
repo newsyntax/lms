@@ -1,5 +1,5 @@
-const banUserModel = require("../../models/ban-user");
-const userModel = require("../../models/user");
+const banUserModel = require("../models/ban-user");
+const userModel = require("../models/user");
 
 exports.banUser = async (req, res) => {
   const user = await userModel.findOne({ _id: req.params.id });

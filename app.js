@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const authRouter = require("./routes/v1/auth");
-const userRouter = require("./routes/v1/users");
+const authRouter = require("./routes/auth");
+const userRouter = require("./routes/users");
 const bodyParser = require("body-parser");
 
 const app = express();
