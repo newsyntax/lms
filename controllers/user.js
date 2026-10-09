@@ -1,5 +1,7 @@
 const userModel = require("../models/user");
 const banUserModel = require("../models/ban-user");
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken");
 
 exports.banUser = async (req, res) => {
   const { id } = req.params
@@ -43,4 +45,19 @@ exports.editUserRole = async (req, res) => {
   await userModel.updateOne({ _id: id }, { $set: { role: req.body.role } })
   res.json({ message: `user role changed to ${req.body.role}` })
 
+}
+
+exports.updateUser = async (req, res) => {
+  const { name, username, email, phone, password } = req.body
+  const hashedPassword = await bcrypt.hash(password, 10)
+  const token = req.header("Authorization").split(" ")[1]
+  const payload = jwt.verify(token, process.env.JWT_SECRET)
+  const userID = req.params.id
+  //only user with its token and its own id can update its own information
+  if (payload.id === userID) {
+
+    await userModel.updateOne({ _id: req.user._id }, { name, username, email, phone, password: hashedPassword })
+    res.json({ message: "user infos updated successfully" })
+  }
+  return res.status(403).json({ message: "invalid info" })
 }
