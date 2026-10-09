@@ -31,3 +31,9 @@ exports.getAllUsers = async (req, res) => {
   const users = await userModel.find({}).select("-password")
   return res.json(users)
 }
+
+exports.removeUser = async (req, res) => {
+  const { id } = req.params
+  await userModel.deleteOne({ _id: id })
+  res.status(200).json({ message: "user remove successfully" })
+}
