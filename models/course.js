@@ -41,10 +41,7 @@ const schema = mongoose.Schema({
         type: String,
         required: true
     },
-    cover: {
-        type: String,
-        required: true
-    }
+
 
 
 
@@ -57,6 +54,15 @@ schema.virtual("sessions", {
     localFeild: "_id",
     foriegnField: "course"
 })
+
+
+schema.virtual("comments", {
+    ref: "Comment",
+    localFeild: "_id",
+    foriegnField: "course"
+})
+
+
 
 const model = mongoose.model("Course", schema)
 
