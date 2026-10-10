@@ -1,5 +1,5 @@
 const validator = require("fastest-validator")
-const mongoose = require("mongoose")
+const { default: mongoose } = require("mongoose")
 const v = new validator()
 
 const schema = {
@@ -17,21 +17,16 @@ const schema = {
 
     },
     discount: {
-        type: Number,
+        type: "number",
         required: true
     },
     category: {
-        type: mongoose.Types.ObjectId,
-        ref: "Category",
+        type: "string",
         required: true
     },
-    creator: {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
-        required: true
-    },
+
     price: {
-        type: Number,
+        type: "number",
         required: true
 
     },
@@ -46,7 +41,8 @@ const schema = {
     cover: {
         type: "string",
         required: true
-    }
+    },
+    $$strict: true
 
 }
 

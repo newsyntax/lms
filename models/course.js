@@ -14,6 +14,11 @@ const schema = mongoose.Schema({
         required: true
 
     },
+    cover: {
+        type: String,
+        required: true
+
+    },
     discount: {
         type: Number,
         required: true
@@ -51,15 +56,15 @@ const schema = mongoose.Schema({
 
 schema.virtual("sessions", {
     ref: "Session",
-    localFeild: "_id",
-    foriegnField: "course"
+    localField: "_id",
+    foreignField: "course"
 })
 
 
 schema.virtual("comments", {
     ref: "Comment",
-    localFeild: "_id",
-    foriegnField: "course"
+    localField: "_id",
+    foreignField: "course"
 })
 
 
