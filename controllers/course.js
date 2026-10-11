@@ -1,5 +1,6 @@
 const { isValidObjectId } = require("mongoose")
 const courseModel = require("../models/course")
+const courseUserModel = require("../models/course-user")
 const sessionModel = require("../models/session")
 const validator = require("../validators/course")
 const fs = require("fs")
@@ -98,4 +99,22 @@ exports.removeOneSession = async (req, res) => {
     }
 
     return res.json(deletedSession)
+}
+
+exports.registerOneStudent = async (req, res) => {
+    const isUserAlreadyRegistered = await courseUserModel.findOne({ user: req.user._id, course: req.params.id })
+    if (isUserAlreadyRegistered) {
+        return res.status(403).json({ message: "user already registerd" })
+
+    }
+
+    const register = await courseUserModel.create({
+        course: req.params.id,
+        price: req.body.price,
+        user: req.user._id
+
+    })
+
+    return res.status(201).json({ message: "user registered successfully" })
+
 }
