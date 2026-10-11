@@ -18,4 +18,6 @@ router
 
 router.route("/sessions").get(authMiddleware, isAdmin, controller.getAllSessions)
 router.route("/:href/:sessionID").get(controller.getOneSessionInfo)
+
+router.route("/session/:id").delete(authMiddleware, isAdmin, controller.removeOneSession)
 module.exports = router

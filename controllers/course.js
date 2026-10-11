@@ -1,3 +1,4 @@
+const { isValidObjectId } = require("mongoose")
 const courseModel = require("../models/course")
 const sessionModel = require("../models/session")
 const validator = require("../validators/course")
@@ -81,4 +82,20 @@ exports.getOneSessionInfo = async (req, res) => {
 
 
     return res.json({ session, allSessionsOfCourse })
+}
+
+exports.removeOneSession = async (req, res) => {
+    const { id } = req.params
+    const isValidID = isValidObjectId(id)
+
+    if (!isValidID) {
+        return res.status(409).json({ message: "invalid id" })
+    }
+
+    const deletedSession = await sessionModel.findOneAndDelete({ _id: id })
+    if (!deletedSession) {
+        return res.status(422).json({ message: "no such session" })
+    }
+
+    return res.json(deletedSession)
 }
