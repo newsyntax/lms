@@ -1,5 +1,7 @@
 const courseModel = require("../models/course")
+const sessionModel = require("../models/session")
 const validator = require("../validators/course")
+const fs = require("fs")
 
 
 exports.create = async (req, res) => {
@@ -34,6 +36,11 @@ exports.create = async (req, res) => {
         return res.status(403).json({ message: "course do not created, there's a problem" })
     }
 
+    fs.mkdir(`./public/courses/${name}`, (err) => {
+        if (err) {
+            console.log(err)    
+        }
+    })
     return res.json({ course })
 }
 
@@ -42,4 +49,19 @@ exports.getAll = async (req, res) => {
         .populate("category")
         .populate("creator", "-password -email -phone -role -username -createdAt -updatedAt -__v")
     return res.json(courses)
+}
+
+exports.createSession = async (req, res) => {
+    const { id } = req.params
+    const { title, time, free } = req.body
+    const session = await sessionModel.create({
+        course: id,
+        title,
+        time,
+        free,
+        video: req.file.filename
+
+    })
+
+    return res.status(201).json(session)
 }
