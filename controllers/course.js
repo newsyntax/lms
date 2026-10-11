@@ -3,6 +3,7 @@ const courseModel = require("../models/course")
 const categoryModel = require("../models/category")
 const courseUserModel = require("../models/course-user")
 const sessionModel = require("../models/session")
+const commentModel = require("../models/comment")
 const validator = require("../validators/course")
 const fs = require("fs")
 
@@ -131,4 +132,30 @@ exports.getCoursesByCategory = async (req, res) => {
         return res.status(403).json({ message: "no such category" })
 
     }
+}
+
+exports.getCourseAllDetails = async (req, res) => {
+
+    const course = await courseModel
+        .findOne({ href: req.params.href })
+        .populate("creator", "name email")
+        .populate("category")
+
+        if(!course){
+            return res.json({message: "no such course"})
+        }
+
+    const sessions = await sessionModel
+        .find({ course: course._id })
+
+
+    const comments = await commentModel
+        .find({ course: course._id, isAccept: 1 })
+        .populate("creator", "name")
+
+    const courseStudentsCount = await courseUserModel.find({ course: course._id }).countDocuments()
+    res.json({ course, sessions, comments, courseStudentsCount })
+
+
+
 }
