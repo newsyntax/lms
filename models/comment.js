@@ -13,6 +13,10 @@ const schema = mongoose.Schema({
         type: Number,
         require: true
     },
+    isAccept: {
+        type: Number,
+        require: true
+    },
     mainCommentID: {
         type: mongoose.Types.ObjectId,
         ref: "Comment"
