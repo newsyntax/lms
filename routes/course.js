@@ -17,4 +17,5 @@ router
 
 
 router.route("/sessions").get(authMiddleware, isAdmin, controller.getAllSessions)
+router.route("/:href/:sessionID").get(controller.getOneSessionInfo)
 module.exports = router
