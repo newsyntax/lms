@@ -38,7 +38,7 @@ exports.create = async (req, res) => {
 
     fs.mkdir(`./public/courses/${name}`, (err) => {
         if (err) {
-            console.log(err)    
+            console.log(err)
         }
     })
     return res.json({ course })
@@ -64,4 +64,9 @@ exports.createSession = async (req, res) => {
     })
 
     return res.status(201).json(session)
+}
+
+exports.getAllSessions = async (req, res) => {
+    const sessions = await sessionModel.find({}).populate("course", "name -_id").lean()
+    res.json(sessions)
 }

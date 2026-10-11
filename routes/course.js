@@ -15,4 +15,6 @@ router
     .route("/:id/session")
     .post(authMiddleware, isAdmin, multer({ storage: multerStorage, limits: { fileSize: 1000000000 } },).single("video"), controller.createSession)
 
+
+router.route("/sessions").get(authMiddleware, isAdmin, controller.getAllSessions)
 module.exports = router
