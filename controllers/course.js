@@ -1,5 +1,6 @@
 const { isValidObjectId } = require("mongoose")
 const courseModel = require("../models/course")
+const categoryModel = require("../models/category")
 const courseUserModel = require("../models/course-user")
 const sessionModel = require("../models/session")
 const validator = require("../validators/course")
@@ -117,4 +118,17 @@ exports.registerOneStudent = async (req, res) => {
 
     return res.status(201).json({ message: "user registered successfully" })
 
+}
+
+exports.getCoursesByCategory = async (req, res) => {
+    const { href } = req.params
+    const category = await categoryModel.findOne({ href })
+
+    if (category) {
+        const courses = await courseModel.find({ category: category._id })
+        return res.json(courses)
+    } else {
+        return res.status(403).json({ message: "no such category" })
+
+    }
 }

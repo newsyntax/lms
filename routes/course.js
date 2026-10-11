@@ -6,6 +6,10 @@ const controller = require("../controllers/course")
 const multerStorage = require("../utils/uploader")
 const multer = require("multer")
 
+
+router.route("/category/:href").get(controller.getCoursesByCategory)
+
+
 router
     .route("/")
     .post(authMiddleware, isAdmin, multer({ storage: multerStorage, limits: { fileSize: 1000000000 } }).single("cover"), controller.create)
@@ -17,7 +21,9 @@ router
 
 
 router.route("/sessions").get(authMiddleware, isAdmin, controller.getAllSessions)
-router.route("/:href/:sessionID").get(controller.getOneSessionInfo)
+router
+    .route("/:href/:sessionID")
+    .get(controller.getOneSessionInfo)
 
 router.route("/session/:id").delete(authMiddleware, isAdmin, controller.removeOneSession)
 
