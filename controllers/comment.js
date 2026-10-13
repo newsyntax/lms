@@ -1,26 +1,31 @@
-const commentModel = require("../models/comment")
-const courseModel = require("../models/course")
+const commentModel = require("../models/comment");
+const courseModel = require("../models/course");
 
 exports.createCommnet = async (req, res) => {
-    const { courseHref, body, score } = req.body
-    const course = await courseModel.findOne({ href: courseHref })
+  const { courseHref, body, score } = req.body;
+  const course = await courseModel.findOne({ href: courseHref });
 
-    if (!course) {
-        return res.status(409).json({ message: "no such course" })
-    }
+  if (!course) {
+    return res.status(409).json({ message: "no such course" });
+  }
 
-    const comment = await commentModel.create({
-        body,
-        course: course._id,
-        score,
-        creator: req.user._id,
-        isAnswer: 0,
-        isAccept: 0
+  const comment = await commentModel.create({
+    body,
+    course: course._id,
+    score,
+    creator: req.user._id,
+    isAnswer: 0,
+    isAccept: 0,
+  });
 
+  res.status(201).json(comment);
+};
 
-    })
-
-
-    res.status(201).json(comment)
-
-}
+exports.removeComment = async (req, res) => {
+  const { id } = req.params;
+  const deletedComment = await commentModel.findOneAndDelete({ _id: id });
+  if (!deletedComment) {
+    return res.status(404).json({ message: "comment not found" });
+  }
+  return res.json(deletedComment);
+};
