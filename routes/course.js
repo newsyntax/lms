@@ -22,6 +22,10 @@ router
   .get(controller.getAll);
 
 router
+  .route("/:id")
+  .delete(authMiddleware, isAdmin, controller.removeOneCourse);
+
+router
   .route("/:id/session")
   .post(
     authMiddleware,

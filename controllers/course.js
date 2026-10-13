@@ -172,3 +172,19 @@ exports.getCourseAllDetails = async (req, res) => {
     isUserRegisteredInThisCourse,
   });
 };
+
+exports.removeOneCourse = async (req, res) => {
+  const isValidID = isValidObjectId(req.params.id);
+  if (!isValidID) {
+    return res.status(404).json({ message: "course not found" });
+  }
+  const deletedCourse = await courseModel.findOneAndDelete({
+    _id: req.params.id,
+  });
+
+  if (!deletedCourse) {
+    return res.status(404).json({ message: "course not found" });
+  }
+
+  return res.json(deletedCourse);
+};
