@@ -23,7 +23,9 @@ router
 
 router
   .route("/:id")
-  .delete(authMiddleware, isAdmin, controller.removeOneCourse);
+  .delete(authMiddleware, isAdmin, controller.getRelatedCourses);
+
+router.route("/related/:href").get(controller.getRelatedCourses);
 
 router
   .route("/:id/session")

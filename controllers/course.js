@@ -188,3 +188,18 @@ exports.removeOneCourse = async (req, res) => {
 
   return res.json(deletedCourse);
 };
+
+exports.getRelatedCourses = async (req, res) => {
+  const { href } = req.params;
+  const course = await courseModel.findOne({ href });
+  if (!course) {
+    return res.status(404).json({ message: "course not found" });
+  }
+  let relatedCourses = await courseModel.find({ category: course.category });
+
+  relatedCourses = relatedCourses.filter((course) => {
+    course.href !== href;
+  });
+
+  return res.json(relatedCourses);
+};
