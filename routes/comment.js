@@ -8,4 +8,11 @@ router.route("/").post(authMiddleware, controller.createCommnet);
 router
   .route("/:id")
   .delete(authMiddleware, isAdminMiddleware, controller.removeComment);
+
+router
+  .route("/:id/accept")
+  .put(authMiddleware, isAdminMiddleware, controller.acceptComment);
+router
+  .route("/:id/reject")
+  .put(authMiddleware, isAdminMiddleware, controller.rejectComment);
 module.exports = router;
