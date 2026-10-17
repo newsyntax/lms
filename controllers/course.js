@@ -141,7 +141,8 @@ exports.getCourseAllDetails = async (req, res) => {
   const course = await courseModel
     .findOne({ href: req.params.href })
     .populate("creator", "name email")
-    .populate("category");
+    .populate("category")
+    .lean();
 
   if (!course) {
     return res.json({ message: "no such course" });
@@ -151,7 +152,9 @@ exports.getCourseAllDetails = async (req, res) => {
 
   const comments = await commentModel
     .find({ course: course._id, isAccept: 1 })
-    .populate("creator", "name");
+    .populate("creator", "name")
+    .populate("course", "name")
+    .lean();
 
   const courseStudentsCount = await courseUserModel
     .find({ course: course._id })
@@ -164,10 +167,25 @@ exports.getCourseAllDetails = async (req, res) => {
     }),
   );
 
+  let allComments = [];
+
+  comments.forEach((comment) => {
+    comments.forEach((answerComment) => {
+      if (String(comment._id) === String(answerComment.mainCommentID)) {
+        allComments.push({
+          ...comment,
+          creator: req.user.name,
+          course: comment.course,
+          answerComment,
+        });
+      }
+    });
+  });
+
   res.json({
     course,
     sessions,
-    comments,
+    comments: allComments,
     courseStudentsCount,
     isUserRegisteredInThisCourse,
   });
