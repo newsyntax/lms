@@ -221,3 +221,24 @@ exports.getRelatedCourses = async (req, res) => {
 
   return res.json(relatedCourses);
 };
+
+//get popular courses based on students count
+exports.getPopularCourses = async (req, res) => {
+  const popularCourses = await courseUserModel.aggregate([
+    {
+      $group: {
+        _id: "$course",
+        course: { $first: "$course" },
+        studentsCount: { $sum: 1 },
+      },
+    },
+    { $sort: { user: 1 } },
+  ]);
+
+  await courseUserModel.populate(popularCourses, {
+    path: "course",
+    select: "name -_id",
+  });
+
+  res.json(popularCourses);
+};

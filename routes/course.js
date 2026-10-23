@@ -6,6 +6,7 @@ const controller = require("../controllers/course");
 const multerStorage = require("../utils/uploader");
 const multer = require("multer");
 
+router.route("/popular").get(controller.getPopularCourses);
 router.route("/:href").get(authMiddleware, controller.getCourseAllDetails);
 router.route("/category/:href").get(controller.getCoursesByCategory);
 
@@ -23,7 +24,7 @@ router
 
 router
   .route("/:id")
-  .delete(authMiddleware, isAdmin, controller.getRelatedCourses);
+  .delete(authMiddleware, isAdmin, controller.removeOneCourse);
 
 router.route("/related/:href").get(controller.getRelatedCourses);
 
@@ -50,4 +51,5 @@ router
 router
   .route("/:id/register")
   .post(authMiddleware, controller.registerOneStudent);
+
 module.exports = router;

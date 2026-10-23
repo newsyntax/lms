@@ -39,9 +39,9 @@ exports.signup = async (req, res) => {
 
   const acccessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
-  const userObject = user.toObject()
-  Reflect.deleteProperty(userObject, "password")
-  res.status(201).json( {userObject, acccessToken} );
+  const userObject = user.toObject();
+  Reflect.deleteProperty(userObject, "password");
+  res.status(201).json({ userObject, acccessToken });
 };
 
 exports.signin = async (req, res) => {
@@ -64,4 +64,4 @@ exports.signin = async (req, res) => {
   res.status(200).json({ acccessToken });
 };
 
-exports.getMe = async (req, res) => { };
+exports.getMe = async (req, res) => {};
