@@ -4,7 +4,11 @@ const authMiddleware = require("../middlewares/auth");
 const isAdminMiddleware = require("../middlewares/isAdmin");
 const controller = require("../controllers/comment");
 
-router.route("/").post(authMiddleware, controller.createCommnet);
+router
+  .route("/")
+  .post(authMiddleware, controller.createCommnet)
+  .get(authMiddleware, isAdminMiddleware, controller.getAllComments);
+
 router
   .route("/:id")
   .delete(authMiddleware, isAdminMiddleware, controller.removeComment);

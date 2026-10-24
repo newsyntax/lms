@@ -170,6 +170,8 @@ exports.getCourseAllDetails = async (req, res) => {
   let allComments = [];
 
   comments.forEach((comment) => {
+    const isHasMainCommentProp = Object.hasOwn(comment, "mainCommentID");
+
     comments.forEach((answerComment) => {
       if (String(comment._id) === String(answerComment.mainCommentID)) {
         allComments.push({
@@ -180,8 +182,13 @@ exports.getCourseAllDetails = async (req, res) => {
         });
       }
     });
+    if (!isHasMainCommentProp) {
+      allComments.push(comment);
+    }
+    if (isHasMainCommentProp) {
+      allComments.pop(comment);
+    }
   });
-
   res.json({
     course,
     sessions,

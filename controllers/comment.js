@@ -75,3 +75,36 @@ exports.answer = async (req, res) => {
 
   return res.status(201).json(answerComment);
 };
+
+exports.getAllComments = async (req, res) => {
+  const comments = await commentModel
+    .find({})
+    .populate("course")
+    .populate("creator", "-password")
+    .lean();
+
+  let allComments = [];
+
+  comments.forEach((comment) => {
+    const isHasMainCommentProp = Object.hasOwn(comment, "mainCommentID");
+
+    comments.forEach((answerComment) => {
+      if (String(comment._id) === String(answerComment.mainCommentID)) {
+        allComments.push({
+          ...comment,
+          creator: req.user.name,
+          course: comment.course,
+          answerComment,
+        });
+      }
+    });
+    if (!isHasMainCommentProp) {
+      allComments.push(comment);
+    }
+    if (isHasMainCommentProp) {
+      allComments.pop(comment);
+    }
+  });
+
+  res.json(allComments);
+};
