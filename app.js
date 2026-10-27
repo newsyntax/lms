@@ -3,9 +3,10 @@ const cors = require("cors");
 const path = require("path");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/users");
-const courseRouter = require("./routes/course")
+const courseRouter = require("./routes/course");
 const categoryRouter = require("./routes/category");
 const commentRouter = require("./routes/comment");
+const contactRouter = require("./routes/contact");
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -20,8 +21,9 @@ app.use(
 
 app.use("/v1/auth/", authRouter);
 app.use("/v1/users/", userRouter);
-app.use("/v1/category/", categoryRouter)
-app.use("/v1/course/", courseRouter)
-app.use("/v1/comment/", commentRouter)
+app.use("/v1/category/", categoryRouter);
+app.use("/v1/course/", courseRouter);
+app.use("/v1/comment/", commentRouter);
+app.use("/v1/contact/", contactRouter);
 
 module.exports = app;
