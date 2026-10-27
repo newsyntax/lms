@@ -7,6 +7,7 @@ const courseRouter = require("./routes/course");
 const categoryRouter = require("./routes/category");
 const commentRouter = require("./routes/comment");
 const contactRouter = require("./routes/contact");
+const newsletterRouter = require("./routes/newsletter");
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -25,5 +26,6 @@ app.use("/v1/category/", categoryRouter);
 app.use("/v1/course/", courseRouter);
 app.use("/v1/comment/", commentRouter);
 app.use("/v1/contact/", contactRouter);
+app.use("/v1/newsletter/", newsletterRouter);
 
 module.exports = app;
