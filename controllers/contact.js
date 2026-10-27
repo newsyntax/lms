@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const contactModel = require("../models/contacts");
 
 exports.getAll = async (req, res) => {
@@ -29,6 +30,16 @@ exports.answer = async (req, res) => {};
 
 exports.remove = async (req, res) => {
   const { id } = req.params;
+
+  const isValidID = mongoose.isValidObjectId(id);
+  if (isValidID) {
+    const isExists = await contactModel.findOne({ _id: id });
+    if (!isExists) {
+      return res.json({ message: "not found" });
+    }
+  } else {
+    return res.json({ message: "invalid id" });
+  }
 
   try {
     const deletedContactsInfo = await contactModel.findOneAndDelete({
