@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const contactModel = require("../models/contacts");
+const nodemailer = require("nodemailer");
 
 exports.getAll = async (req, res) => {
   const contacts = await contactModel.find({});
@@ -26,8 +27,6 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.answer = async (req, res) => {};
-
 exports.remove = async (req, res) => {
   const { id } = req.params;
 
@@ -53,4 +52,34 @@ exports.remove = async (req, res) => {
   } catch (error) {
     return res.json(error);
   }
+};
+
+exports.answer = async (req, res) => {
+  //we'll need to acrive 2 step verification and app password from gmail and set the app password to the pass
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "example@gmail.com",
+      pass: "test password",
+    },
+  });
+
+  const mailOption = {
+    from: "example@gmail.com",
+    to: req.body.email,
+    subject: "answer your message",
+    text: req.body.answer,
+  };
+
+  transporter.sendMail(mailOption, async (error, info) => {
+    if (error) {
+      return res.json({ message: "email not send" });
+    } else {
+      const contact = await contactModel.findOneAndUpdate(
+        { email: req.body.email },
+        { answer: 1 },
+      );
+      return res.json({ message: "email sent successfully" });
+    }
+  });
 };

@@ -4,7 +4,7 @@
   "description": "full stack learning management system",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1", 
+    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js"
   },
   "repository": {
@@ -27,7 +27,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.10.4",
     "multer": "^2.4.0",
-    "nodemailer": "^10.0.14",
+    "nodemailer": "^10.2.1",
     "nodemon": "^3.1.14"
   }
 }
