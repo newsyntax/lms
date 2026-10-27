@@ -8,6 +8,7 @@ const categoryRouter = require("./routes/category");
 const commentRouter = require("./routes/comment");
 const contactRouter = require("./routes/contact");
 const newsletterRouter = require("./routes/newsletter");
+const searchRouter = require("./routes/search");
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -27,5 +28,6 @@ app.use("/v1/course/", courseRouter);
 app.use("/v1/comment/", commentRouter);
 app.use("/v1/contact/", contactRouter);
 app.use("/v1/newsletter/", newsletterRouter);
+app.use("/v1/search/", searchRouter);
 
 module.exports = app;
