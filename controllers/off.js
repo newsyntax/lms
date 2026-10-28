@@ -6,7 +6,19 @@ exports.getAll = async (req, res) => {
   res.json(offerCodes);
 };
 
-exports.create = async (req, res) => {};
+exports.create = async (req, res) => {
+  const { code, percent, useCount, max, course } = req.body;
+  const newOffCode = await offModel.create({
+    code,
+    percent,
+    useCount,
+    max,
+    course,
+    creator: req.user._id,
+  });
+
+  res.status(201).json(newOffCode);
+};
 
 exports.setOffOnAll = async (req, res) => {
   const { discount } = req.body;
