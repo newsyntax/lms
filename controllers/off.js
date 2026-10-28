@@ -2,7 +2,10 @@ const offModel = require("./../models/off");
 const coursesModel = require("./../models/course");
 
 exports.getAll = async (req, res) => {
-  const offerCodes = await offModel.find({});
+  const offerCodes = await offModel
+    .find({}, "-__v")
+    .populate("course", "name  -_id")
+    .populate("creator", "name  -_id");
   res.json(offerCodes);
 };
 
