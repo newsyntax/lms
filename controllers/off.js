@@ -35,6 +35,10 @@ exports.setOffOnAll = async (req, res) => {
   return res.json({ message: "offer set on all courses successfully" });
 };
 
-exports.removeOne = async (req, res) => {};
+exports.removeOne = async (req, res) => {
+  const { id } = req.params;
+  await offModel.deleteOne({ _id: id });
+  res.json({ message: "offer code removed" });
+};
 
 exports.getOne = async (req, res) => {};
