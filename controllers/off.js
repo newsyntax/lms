@@ -1,5 +1,6 @@
 const offModel = require("./../models/off");
 const coursesModel = require("./../models/course");
+const { default: mongoose } = require("mongoose");
 
 exports.getAll = async (req, res) => {
   const offerCodes = await offModel
@@ -41,4 +42,25 @@ exports.removeOne = async (req, res) => {
   res.json({ message: "offer code removed" });
 };
 
-exports.getOne = async (req, res) => {};
+exports.getOne = async (req, res) => {
+  const { code } = req.params;
+  const { course } = req.body;
+
+  if (!mongoose.isValidObjectId(course)) {
+    return res.status(422).json({ message: "invalid course ID" });
+  }
+
+  const offer = await offModel.findOne({ code, course });
+
+  if (!offer) {
+    return res.status(404).json({ message: "no such offer code" });
+  } else if (offer.useCount === offer.max) {
+    return res.status(409).json({ message: "offer code is expired" });
+  } else {
+    await offModel.findOneAndUpdate(
+      { code, course },
+      { useCount: offer.useCount + 1 },
+    );
+    return res.json(offer);
+  }
+};
