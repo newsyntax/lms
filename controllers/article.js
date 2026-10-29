@@ -5,7 +5,7 @@ exports.getAll = async (req, res) => {
   res.json(articles);
 };
 exports.create = async (req, res) => {
-  const { title, decription, body, href, publish, tags, category } = req.body;
+  const { title, decription, body, href, tags, category } = req.body;
 
   const newArticleInfo = {
     title,
@@ -13,7 +13,6 @@ exports.create = async (req, res) => {
     body,
     href,
     cover: req.file.filename,
-    publish,
     tags: tags.split(", "),
     category,
     creator: req.user._id,
@@ -27,5 +26,9 @@ exports.removeOne = async (req, res) => {
   await articlesModel.deleteOne({ _id: id });
   res.json("article removed successfully");
 };
-exports.saveDraft = async (req, res) => {};
+exports.saveDraft = async (req, res) => {
+  const { id } = req.params;
+  await articlesModel.updateOne({ _id: id }, { publish: 0 });
+  res.json({ message: "article save into drafts" });
+};
 exports.getOne = async (req, res) => {};

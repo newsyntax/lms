@@ -23,7 +23,7 @@ const schema = mongoose.Schema(
     },
     publish: {
       type: Number,
-      default: 1,
+      default: 0,
       required: true,
     },
     tags: {
