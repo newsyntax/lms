@@ -23,8 +23,8 @@ router
   .delete(authMiddleware, isAdminMiddleware, controller.removeOne);
 
 router
-  .route("/draft")
-  .delete(authMiddleware, isAdminMiddleware, controller.saveDraft);
+  .route("/:id/draft")
+  .put(authMiddleware, isAdminMiddleware, controller.saveDraft);
 router
   .route("/:href")
   .delete(authMiddleware, isAdminMiddleware, controller.getOne);
