@@ -22,6 +22,10 @@ exports.create = async (req, res) => {
   const newArticle = await articlesModel.create(newArticleInfo);
   res.status(201).json(newArticle);
 };
-exports.removeOne = async (req, res) => {};
+exports.removeOne = async (req, res) => {
+  const { id } = req.params;
+  await articlesModel.deleteOne({ _id: id });
+  res.json("article removed successfully");
+};
 exports.saveDraft = async (req, res) => {};
 exports.getOne = async (req, res) => {};
