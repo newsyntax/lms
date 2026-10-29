@@ -1,17 +1,16 @@
 const commentModel = require("../models/comment");
 const courseModel = require("../models/course");
+const articlesModel = require("../models/article");
 
 exports.createCommnet = async (req, res) => {
-  const { courseHref, body, score } = req.body;
+  const { courseHref, body, articleID, score } = req.body;
   const course = await courseModel.findOne({ href: courseHref });
-
-  if (!course) {
-    return res.status(409).json({ message: "no such course" });
-  }
+  const article = await articlesModel.findOne({ _id: articleID });
 
   const comment = await commentModel.create({
     body,
-    course: course._id,
+    course: course?._id,
+    article: article._id,
     score,
     creator: req.user._id,
     isAnswer: 0,
@@ -67,6 +66,7 @@ exports.answer = async (req, res) => {
   const answerComment = await commentModel.create({
     body,
     course: acceptedComment.course,
+    article: acceptedComment.article,
     creator: req.user._id,
     isAnswer: 1,
     isAccept: 1,

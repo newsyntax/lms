@@ -25,6 +25,6 @@ router
 router
   .route("/:id/draft")
   .put(authMiddleware, isAdminMiddleware, controller.saveDraft);
-router.route("/:href").get(controller.getOne);
+router.route("/:href").get(authMiddleware, controller.getOne);
 
 module.exports = router;

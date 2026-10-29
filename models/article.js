@@ -44,6 +44,12 @@ const schema = mongoose.Schema(
   { timestamps: true },
 );
 
+schema.virtual("comments", {
+  ref: "Comment",
+  localField: "_id",
+  foreignField: "article",
+});
+
 const model = mongoose.model("Article", schema);
 
 module.exports = model;
