@@ -1,4 +1,5 @@
 const articlesModel = require("../models/article");
+const commentssModel = require("../models/comment");
 
 exports.getAll = async (req, res) => {
   const articles = await articlesModel.find({});
@@ -31,4 +32,38 @@ exports.saveDraft = async (req, res) => {
   await articlesModel.updateOne({ _id: id }, { publish: 0 });
   res.json({ message: "article save into drafts" });
 };
-exports.getOne = async (req, res) => {};
+exports.getOne = async (req, res) => {
+  const { href } = req.params;
+
+  const article = await articlesModel.findOne({ href });
+  const comments = await commentssModel
+    .find({
+      article: article?._id,
+    })
+    .lean()
+    .populate("creator", "name");
+
+  let allComments = [];
+
+  comments.forEach((comment) => {
+    const isHasMainCommentProp = Object.hasOwn(comment, "mainCommentID");
+
+    comments.forEach((answerComment) => {
+      if (String(comment._id) === String(answerComment.mainCommentID)) {
+        allComments.push({
+          ...comment,
+          creator: req.user.name,
+          course: comment.course,
+          answerComment,
+        });
+      }
+    });
+    if (!isHasMainCommentProp) {
+      allComments.push(comment);
+    }
+    if (isHasMainCommentProp) {
+      allComments.pop(comment);
+    }
+  });
+  res.json({ article, comments: allComments });
+};
