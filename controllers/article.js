@@ -65,9 +65,5 @@ exports.getOne = async (req, res) => {
       allComments.pop(comment);
     }
   });
-<<<<<<< HEAD
-=======
-  console.log(comments);
->>>>>>> f62090aa7fed0fed0bc51a99511933128c7f65b9
   res.json({ article, comments: allComments });
 };
