@@ -1,14 +1,35 @@
 const departmentsModel = require("../models/department");
 const subsDepartmentModel = require("../models/sub-department");
+const ticketModel = require("../models/ticket");
 
-exports.create = async (req, res) => {};
+exports.create = async (req, res) => {
+  const { departmentID, subDepartmentID, title, body, periority } = req.body;
+
+  try {
+    const ticket = await ticketModel.create({
+      departmentID,
+      subDepartmentID,
+      user: req.user._id,
+      title,
+      body,
+      answer: 0,
+      periority,
+      isAnswer: 0,
+    });
+    res.status(201).json(ticket);
+  } catch (error) {
+    return res.json({ message: "somthing went wrong" });
+  }
+};
 
 exports.getAll = async (req, res) => {
-  // Code ...
+  const tickets = await ticketModel.find();
+  res.json(tickets);
 };
 
 exports.userTickets = async (req, res) => {
-  // Code ...
+  const tickets = await ticketModel.find({ user: req.user._id });
+  res.json(tickets);
 };
 
 exports.createDepartment = async (req, res) => {
