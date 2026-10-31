@@ -12,12 +12,14 @@ router
 router.route("/user").get(authMiddleware, ticketController.userTickets);
 
 router
-  .route("/department")
-  .get(authMiddleware, isAdminMiddleware, ticketController.departments);
+  .route("/departments")
+  .get(ticketController.departments)
+  .post(authMiddleware, isAdminMiddleware, ticketController.createDepartment);
 
 router
-  .route("/:departmentID/subs-department")
-  .get(authMiddleware, isAdminMiddleware, ticketController.departmentSubs);
+  .route("/departments/:id/subs")
+  .get(ticketController.departmentSubs)
+  .post(authMiddleware, isAdminMiddleware, ticketController.creatSub);
 
 router
   .route("/answer")
