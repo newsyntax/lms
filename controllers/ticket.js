@@ -12,7 +12,7 @@ exports.create = async (req, res) => {
       user: req.user._id,
       title,
       body,
-      answer: 0,
+      answered: 0,
       periority,
       isAnswer: 0,
     });
@@ -64,7 +64,25 @@ exports.departmentSubs = async (req, res) => {
 };
 
 exports.setAnswer = async (req, res) => {
-  // Code ...
+  const { ticketID, body } = req.body;
+
+  const ticket = await ticketModel.findOne({ _id: ticketID });
+
+  const answer = await ticketModel.create({
+    departmentID: ticket.departmentID,
+    subDepartmentID: ticket.subDepartmentID,
+    title: "your ticket answer",
+    user: req.user._id,
+    body,
+    answered: 0,
+    isAnswer: 1,
+    periority: ticket.periority,
+    parent: ticket._id,
+  });
+
+  await ticketModel.findOneAndUpdate({ _id: ticket._id }, { answered: 1 });
+
+  res.status(201).json({ message: "ticket answered sucssussfylly" });
 };
 
 exports.getAnswer = async (req, res) => {
