@@ -19,7 +19,7 @@ router
 router
   .route("/departments/:id/subs")
   .get(ticketController.departmentSubs)
-  .post(authMiddleware, isAdminMiddleware, ticketController.creatSub);
+  .post(authMiddleware, isAdminMiddleware, ticketController.createSub);
 
 router
   .route("/answer")
