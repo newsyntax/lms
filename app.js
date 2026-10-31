@@ -13,6 +13,7 @@ const notificationRouter = require("./routes/notification");
 const offRouter = require("./routes/off");
 const articleRouter = require("./routes/article");
 const orderRouter = require("./routes/order");
+const ticketRouter = require("./routes/ticket");
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -37,5 +38,6 @@ app.use("/v1/notification/", notificationRouter);
 app.use("/v1/off/", offRouter);
 app.use("/v1/article/", articleRouter);
 app.use("/v1/order/", orderRouter);
+app.use("/v1/ticket/", ticketRouter);
 
 module.exports = app;
