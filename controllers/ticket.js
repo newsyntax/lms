@@ -23,7 +23,11 @@ exports.create = async (req, res) => {
 };
 
 exports.getAll = async (req, res) => {
-  const tickets = await ticketModel.find();
+  const tickets = await ticketModel
+    .find({ answer: 0 })
+    .populate("departmentID", "title")
+    .populate("subDepartmentID", "title")
+    .populate("user", "name");
   res.json(tickets);
 };
 
