@@ -35,6 +35,14 @@ const schema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  isAnswer: {
+    type: Number,
+    required: true,
+  },
+  parent: {
+    type: mongoose.Types.ObjectId,
+    ref: "Ticket",
+  },
 });
 const model = mongoose.model("Ticket", schema);
 module.exports = model;
