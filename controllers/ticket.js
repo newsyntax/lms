@@ -1,7 +1,6 @@
 const departmentsModel = require("../models/department");
 const subsDepartmentModel = require("../models/sub-department");
 const ticketModel = require("../models/ticket");
-const isValidObjectID = require("../utils/isValidObjectID");
 
 exports.create = async (req, res) => {
   const { departmentID, subDepartmentID, title, body, periority } = req.body;
@@ -33,7 +32,11 @@ exports.getAll = async (req, res) => {
 };
 
 exports.userTickets = async (req, res) => {
-  const tickets = await ticketModel.find({ user: req.user._id });
+  const tickets = await ticketModel
+    .find({ user: req.user._id })
+    .populate("departmentID", "title")
+    .populate("subDepartmentID", "title")
+    .populate("user", "name");
   res.json(tickets);
 };
 
