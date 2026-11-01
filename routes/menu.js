@@ -6,9 +6,10 @@ const isAdmin = require("../middlewares/isAdmin");
 
 router
   .route("/")
-  .get(authMiddleware, isAdmin, controller.getAllInPanel)
   .get(controller.getAll)
   .post(authMiddleware, isAdmin, controller.create);
+
+router.route("/all").get(authMiddleware, isAdmin, controller.getAllInPanel);
 
 router.route("/:id").delete(authMiddleware, isAdmin, controller.remove);
 
