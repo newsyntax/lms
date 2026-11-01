@@ -25,6 +25,6 @@ router
   .route("/answer")
   .post(authMiddleware, isAdminMiddleware, ticketController.setAnswer);
 
-router.route("/:id/answr").get(authMiddleware, ticketController.getAnswer);
+router.route("/:id/answer").get(authMiddleware, ticketController.getAnswer);
 
 module.exports = router;

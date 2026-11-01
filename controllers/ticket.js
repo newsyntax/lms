@@ -1,6 +1,7 @@
 const departmentsModel = require("../models/department");
 const subsDepartmentModel = require("../models/sub-department");
 const ticketModel = require("../models/ticket");
+const isValidObjectID = require("../utils/isValidObjectID");
 
 exports.create = async (req, res) => {
   const { departmentID, subDepartmentID, title, body, periority } = req.body;
@@ -86,5 +87,10 @@ exports.setAnswer = async (req, res) => {
 };
 
 exports.getAnswer = async (req, res) => {
-  // Code ...
+  const { id } = req.params;
+
+  const ticket = await ticketModel.findOne({ _id: id });
+  const ticketAnswer = await ticketModel.findOne({ parent: id });
+
+  res.json({ ticket, ticketAnswer: ticketAnswer ? ticketAnswer : null });
 };
