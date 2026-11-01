@@ -13,5 +13,6 @@ exports.getAllInPanel = async (req, res) => {
   res.json(menu);
 };
 exports.remove = async (req, res) => {
-  // Code ...
+  await menuModel.deleteOne({ _id: req.params.id });
+  res.json({ message: "menu removed successfully" });
 };
