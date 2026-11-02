@@ -1,7 +1,20 @@
 const menuModel = require("../models/menu");
 
 exports.getAll = async (req, res) => {
-  // Code ...
+  const menus = await menuModel.find({}).lean();
+  menus.forEach((menu) => {
+    const submenus = [];
+    for (let index = 0; index < menus.length; index++) {
+      const mainMenu = menus[index];
+      if (mainMenu.parent?.equals(menu._id)) {
+        submenus.push(menus.splice(index, 1)[0]);
+        index = index - 1;
+      }
+    }
+    menu.submenus = submenus;
+  });
+
+  return res.json(menus);
 };
 exports.create = async (req, res) => {
   const { title, parent, href } = req.body;
