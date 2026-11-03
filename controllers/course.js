@@ -249,3 +249,55 @@ exports.getPopularCourses = async (req, res) => {
 
   res.json(popularCourses);
 };
+
+exports.getAllByAdmin = async (req, res) => {
+  const courses = await courseModel
+    .find({})
+    .lean()
+    .populate("category")
+    .populate("creator", "name");
+
+  const students = await courseUserModel.find({}).lean();
+  const comments = await commentModel.find({}).lean();
+  const sessions = await sessionModel.find({}).lean();
+  let allCourses = [];
+
+  courses.forEach((course) => {
+    const studentsCount = students.filter(
+      (student) => student.course.toString() === course._id.toString(),
+    );
+
+    // course score average
+    let score = 0;
+    let scoreAverage = 0;
+    const courseComments = comments.filter((comment) =>
+      comment.course?.equals(course._id),
+    );
+    courseComments.forEach((comment) => {
+      score += comment.score;
+    });
+    scoreAverage = score / courseComments.length;
+
+    //course sessions count
+    let courseSessionsCount = 0;
+    const courseSesstions = sessions.filter((session) =>
+      session.course.equals(course._id),
+    );
+    courseSessionsCount = courseSesstions.length;
+
+    //course sessions time
+    let courseTime = 0;
+    courseSesstions.forEach(
+      (session) => (courseTime += Number(session.time.split(":")[0])),
+    );
+
+    allCourses.push({
+      ...course,
+      studentsCount: studentsCount.length,
+      scoreAverage,
+      courseSessionsCount,
+      courseTime,
+    });
+  });
+  res.json(allCourses);
+};
