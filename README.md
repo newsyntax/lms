@@ -1,2 +1,3 @@
 # lms
-full stack learning management system 
+node & express back-end of learning management system 
+
