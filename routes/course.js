@@ -11,6 +11,10 @@ router.route("/:href").get(authMiddleware, controller.getCourseAllDetails);
 router.route("/category/:href").get(controller.getCoursesByCategory);
 
 router
+  .route("/admin/courses")
+  .get(authMiddleware, isAdmin, controller.getAllByAdmin);
+
+router
   .route("/")
   .post(
     authMiddleware,
