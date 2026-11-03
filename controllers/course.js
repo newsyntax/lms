@@ -255,7 +255,8 @@ exports.getAllByAdmin = async (req, res) => {
     .find({})
     .lean()
     .populate("category")
-    .populate("creator", "name");
+    .populate("creator", "name")
+    .sort({ _id: -1 });
 
   const students = await courseUserModel.find({}).lean();
   const comments = await commentModel.find({}).lean();
